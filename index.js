@@ -29,11 +29,9 @@ save:function(cmd,db,overrides,callback){
 this.data(cmd,function(dat){
 var data=JSON.parse(dat);
 data.updatedAt=new Date().getTime();
-console.log(overrides);
-verb(JSON.stringify(data));
 
-overr(data,overrides);
-verb(JSON.stringify(data));
+
+
 
 if(data._id){
 
