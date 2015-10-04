@@ -20,14 +20,13 @@ module.exports = {
 data:function(cmd,callback){
   exec(cmd, function(error, stdout, stderr) {
     if(callback){
-      callback(stdout)
+      callback(JSON.parse(stdout))
     }
 })
 },
 save:function(cmd,db,overrides,callback){
   var db=PouchDB(db);
-this.data(cmd,function(dat){
-var data=JSON.parse(dat);
+this.data(cmd,function(data){
 data.updatedAt=new Date().getTime();
 
 
