@@ -1,7 +1,8 @@
 var exec = require('child_process').exec,
 PouchDB = require('pouchdb'),
 verb=require('verbo'),
-diff=require('deep-diff')
+diff=require('deep-diff'),
+Promise = require('promise');
 
 
 
@@ -14,26 +15,41 @@ function overr(data,overrides){
   });
 }
 
+function ex(cmd){
+  return new Promise(function (resolve, reject) {
+
+  exec(cmd, function(error, stdout, stderr) {
+var data=JSON.parse(stdout);
+    if (!data) reject('no data');
+    else resolve(data);
+})
+
+})
+}
 
 module.exports = {
-  pure:function(cmd,callback){
-    exec(cmd, function(error, stdout, stderr) {
-      if(callback){
-        callback(JSON.parse(stdout))
-      }
-  })
+  pure:function(cmd){
+  return ex(cmd);
   },
-data:function(cmd,overrides,callback){
-  this.pure(cmd,function(data){
-    overr(data,overrides);
-    if(callback){
-      callback(data)
-    }
+data:function(cmd,overrides){
+  return new Promise(function (resolve, reject) {
+    verb('z')
+
+ex(cmd).then(function(data){
+  overr(data,overrides);
+resolve(data);
+}).catch(function(err){
+  reject(err)
 })
+
+})
+
 },
 save:function(cmd,db,overrides,callback){
   var db=PouchDB(db);
-this.data(cmd,overrides,function(data){
+  return new Promise(function (resolve, reject) {
+ex(cmd).then(function(data){
+  overr(data,overrides);
 data.updatedAt=new Date().getTime();
 
 if(data._id){
@@ -45,59 +61,55 @@ if(data._id){
 
         db.put(data).then(function(d){
         //  console.log(d)
-        if(callback){
-          callback(data)
-        }
+          resolve(data);
+
         }).catch(function(err){
           verb(err,"error","Memrun");
-          if(callback){
-      callback({error:err})
-      }
+          reject(err)
+
         });
 
 
   }).catch(function(err){
     if (err.status&&err.status==404) {
         db.put(data).then(function(){
-          if(callback){
-            callback(data)
-          }
+            resolve(data);
+
         });
       } else{
         verb(err,"error","Memrun")
-        if(callback){
-    callback({error:err})
-    }
+        reject(err)
+
       }
   })
 } else{
   db.post(data).then(function(){
-    if(callback){
-      callback(data)
-    }
+    resolve(data);
+
   }).catch(function(err){
     verb(err,"error","Memrun post obj"+data);
-    if(callback){
-callback({error:err})
-}
+    reject(err)
+
   });
 }
 
-  })
 
+
+}).catch(function(err){
+  reject(err)
+})
+
+})
 
 
 
 },
 ifchange:function(cmd,db,overrides,callback){
   var db=PouchDB(db);
-this.data(cmd,overrides,function(data){
-
+  return new Promise(function (resolve, reject) {
+ex(cmd).then(function(data){
+  overr(data,overrides);
 data.updatedAt=new Date().getTime();
-
-
-
-
 
 if(data._id){
 
@@ -107,49 +119,49 @@ if(data._id){
 doc.updatedAt=data.updatedAt;
         if(diff(data,doc)){
 
-        db.put(data).then(function(d){
+        db.put(data).then(function(){
         //  console.log(d)
-        if(callback){
-          callback(data)
-        }
+        resolve(data);
+
         }).catch(function(err){
           verb(err,"error","Memrun");
-          if(callback){
-      callback({error:err})
-      }
+          reject(err)
+
         });
+} else{
+  reject({success:false,error:"equals",data:data})
 }
 
   }).catch(function(err){
     if (err.status&&err.status==404) {
         db.put(data).then(function(){
-          if(callback){
-            callback(data)
-          }
+          resolve(data);
+
         });
       } else{
         verb(err,"error","Memrun")
-        if(callback){
-    callback({error:err})
-    }
+        reject(err)
+
       }
   })
 } else{
   db.post(data).then(function(){
-    if(callback){
-      callback(data)
-    }
+    resolve(data);
+
   }).catch(function(err){
     verb(err,"error","Memrun post obj"+data);
-    if(callback){
-callback({error:err})
-}
+    reject(err)
+
   });
 }
 
-  })
+  }).catch(function(err){
+    verb(err,"error","Memrun post obj"+data);
+    reject(err)
 
+  });
 
+})
 
 
 }

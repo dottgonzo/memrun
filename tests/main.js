@@ -14,19 +14,31 @@ var oveer={
   _id:'test',
   ff:"zz"
 };
-memrun.data("echo '{\"aa\":\"bb\"}'",{},function(data){
+
+memrun.pure("echo '{\"aa\":\"bb\"}'").then(function(data){
+  verb(JSON.stringify(data),"debug","Memrun:pure");
+})
+memrun.data("echo '{\"aa\":\"bb\"}'",{}).then(function(data){
   verb(JSON.stringify(data),"debug","Memrun:data");
-  memrun.save("echo '{\"aa\":\"bb\"}'",testdb,{},function(data){
+})
+memrun.save("echo '{\"aa\":\"bb\"}'",testdb,{}).then(function(data){
+  verb(JSON.stringify(data),"debug","Memrun:save");
+})
+memrun.data("echo '{\"aa\":\"bb\"}'",{}).then(function(data){
+  verb(JSON.stringify(data),"debug","Memrun:data");
+  memrun.save("echo '{\"aa\":\"bb\"}'",testdb,{}).then(function(data){
     verb(JSON.stringify(data),"info","Memrun:save");
-    memrun.save("echo '{\"aa\":\"bb\"}'",testdb,over,function(data){
+    memrun.save("echo '{\"aa\":\"bb\"}'",testdb,over).then(function(data){
       verb(JSON.stringify(data),"info","Memrun:save");
-      memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,oveer,function(data){
+      memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,oveer).then(function(data){
         verb(JSON.stringify(data),"debug","Memrun:change");
-        memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,over,function(data){
+        memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,over).then(function(data){
           verb(JSON.stringify(data),"debug","Memrun:change");
-          memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,over,function(data){
+          memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,over).then(function(data){
             verb(JSON.stringify(data),"error","Memrun:change");
             process.exit(1);
+          }).catch(function(err){
+            verb(err)
           });
             rm.dir('./'+testdb)
         });
