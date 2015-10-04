@@ -22,5 +22,8 @@
     "deep-diff": "^0.3.2",
     "pouchdb": "^4.0.3",
     "verbo": "0.0.7"
+  },
+  "devDependencies": {
+    "rm-r": "^1.0.2"
   }
 }
