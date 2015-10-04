@@ -46,7 +46,8 @@ memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,oveer,function(data){
 db.allDocs({include_docs:true}).then(function(doc){
   for(var i=0;i<doc.rows.length;i++){
     verb(JSON.stringify(doc.rows[i].doc))
-rm.dir('./'+testdb);
   }
+  rm.dir('./'+testdb);
+
 })
 });
