@@ -16,22 +16,25 @@ function overr(data,overrides){
 
 
 module.exports = {
-
-data:function(cmd,callback){
-  exec(cmd, function(error, stdout, stderr) {
+  pure:function(cmd,callback){
+    exec(cmd, function(error, stdout, stderr) {
+      if(callback){
+        callback(JSON.parse(stdout))
+      }
+  })
+  },
+data:function(cmd,overrides,callback){
+  this.pure(cmd,function(data){
+    overr(data,overrides);
     if(callback){
-      callback(JSON.parse(stdout))
+      callback(data)
     }
 })
 },
 save:function(cmd,db,overrides,callback){
   var db=PouchDB(db);
-this.data(cmd,function(data){
+this.data(cmd,overrides,function(data){
 data.updatedAt=new Date().getTime();
-
-
-overr(data,overrides);
-
 
 if(data._id){
 
@@ -88,13 +91,12 @@ callback({error:err})
 },
 ifchange:function(cmd,db,overrides,callback){
   var db=PouchDB(db);
-this.data(cmd,function(data){
+this.data(cmd,overrides,function(data){
 
 data.updatedAt=new Date().getTime();
 
 
 
-overr(data,overrides);
 
 
 if(data._id){

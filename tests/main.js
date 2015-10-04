@@ -14,7 +14,7 @@ var oveer={
   _id:'test',
   ff:"zz"
 };
-memrun.data("echo '{\"aa\":\"bb\"}'",function(data){
+memrun.data("echo '{\"aa\":\"bb\"}'",{},function(data){
   verb(JSON.stringify(data),"debug","Memrun:data");
   memrun.save("echo '{\"aa\":\"bb\"}'",testdb,{},function(data){
     verb(JSON.stringify(data),"info","Memrun:save");
@@ -26,6 +26,7 @@ memrun.data("echo '{\"aa\":\"bb\"}'",function(data){
           verb(JSON.stringify(data),"debug","Memrun:change");
           memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,over,function(data){
             verb(JSON.stringify(data),"error","Memrun:change");
+            process.exit(1);
           });
             rm.dir('./'+testdb)
         });
