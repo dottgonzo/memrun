@@ -30,5 +30,4 @@ memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,over,function(data){
 });
 memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,oveer,function(data){
   verb(JSON.stringify(data),"debug","Memrun:change");
-
 });

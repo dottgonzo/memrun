@@ -31,10 +31,10 @@ var data=JSON.parse(dat);
 data.updatedAt=new Date().getTime();
 
 
+overr(data,overrides);
 
 
 if(data._id){
-  overr(data,overrides);
 
 
   db.get(data._id).then(function(doc){
