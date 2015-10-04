@@ -88,8 +88,8 @@ callback({error:err})
 },
 ifchange:function(cmd,db,overrides,callback){
   var db=PouchDB(db);
-this.data(cmd,function(dat){
-var data=JSON.parse(dat);
+this.data(cmd,function(data){
+
 data.updatedAt=new Date().getTime();
 
 

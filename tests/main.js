@@ -14,8 +14,8 @@ var oveer={
   _id:'testt',
   ff:"zz"
 };
-memrun.data("echo '{aa:bb}'",function(data){
-  verb(data,"debug","Memrun:data");
+memrun.data("echo '{\"aa\":\"bb\"}'",function(data){
+  verb(JSON.stringify(data),"debug","Memrun:data");
 });
 memrun.save("echo '{\"aa\":\"bb\"}'",testdb,{},function(data){
   verb(JSON.stringify(data),"info","Memrun:save");
