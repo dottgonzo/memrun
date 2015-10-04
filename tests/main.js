@@ -6,48 +6,29 @@ rm=require('rm-r');
 
 
 var over={
-  _id:'test'
+  _id:'test',
+  jj:"gg"
+
 };
 var oveer={
-  _id:'testt'
+  _id:'testt',
+  ff:"zz"
 };
-// memrun.data("echo '{aa:bb}'",function(data){
-//   verb(data,"info","Memrun");
-// });
-// memrun.save("echo '{\"aa\":\"bb\"}'",testdb,{},function(data){
-//   verb(JSON.stringify(data),"debug","Memrun");
-// db.allDocs({include_docs:true}).then(function(doc){
-//   for(var i=0;i<doc.rows.length;i++){
-//     verb(JSON.stringify(doc.rows[i].doc))
-//
-//   }
-// })
-// });
-// memrun.save("echo '{\"aa\":\"bb\"}'",testdb,over,function(data){
-//   verb(JSON.stringify(data),"debug","Memrun");
-// db.allDocs({include_docs:true}).then(function(doc){
-//   for(var i=0;i<doc.rows.length;i++){
-//     verb(JSON.stringify(doc.rows[i].doc))
-//
-//   }
-// })
-// });
-// memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,oveer,function(data){
-//   verb(JSON.stringify(data),"debug","Memrun");
-// db.allDocs({include_docs:true}).then(function(doc){
-//   for(var i=0;i<doc.rows.length;i++){
-//     verb(JSON.stringify(doc.rows[i].doc))
-//
-//   }
-// })
-// });
-memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,oveer,function(data){
-  verb(JSON.stringify(data),"debug","Memrun");
-db.allDocs({include_docs:true}).then(function(doc){
-  for(var i=0;i<doc.rows.length;i++){
-    verb(JSON.stringify(doc.rows[i].doc))
-  }
-  rm.dir('./'+testdb);
+memrun.data("echo '{aa:bb}'",function(data){
+  verb(data,"debug","Memrun:data");
+});
+memrun.save("echo '{\"aa\":\"bb\"}'",testdb,{},function(data){
+  verb(JSON.stringify(data),"info","Memrun:save");
 
-})
+});
+memrun.save("echo '{\"aa\":\"bb\"}'",testdb,over,function(data){
+  verb(JSON.stringify(data),"info","Memrun");
+
+});
+memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,over,function(data){
+  verb(JSON.stringify(data),"debug","Memrun");
+});
+memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,oveer,function(data){
+  verb(JSON.stringify(data),"debug","Memrun:change");
+
 });
