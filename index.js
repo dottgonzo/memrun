@@ -33,8 +33,6 @@ module.exports = {
   },
 data:function(cmd,overrides){
   return new Promise(function (resolve, reject) {
-    verb('z')
-
 ex(cmd).then(function(data){
   overr(data,overrides);
 resolve(data);
