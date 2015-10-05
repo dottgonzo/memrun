@@ -30,11 +30,11 @@ memrun.data("echo '{\"aa\":\"bb\"}'",{}).then(function(data){
     verb(JSON.stringify(data),"info","Memrun:save");
     memrun.save("echo '{\"aa\":\"bb\"}'",testdb,over).then(function(data){
       verb(JSON.stringify(data),"info","Memrun:save");
-      memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,oveer).then(function(data){
+      memrun.ifchangesave("echo '{\"aa\":\"bb\"}'",testdb,oveer).then(function(data){
         verb(JSON.stringify(data),"debug","Memrun:change");
-        memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,over).then(function(data){
+        memrun.ifchangesave("echo '{\"aa\":\"bb\"}'",testdb,over).then(function(data){
           verb(JSON.stringify(data),"debug","Memrun:change");
-          memrun.ifchange("echo '{\"aa\":\"bb\"}'",testdb,over).then(function(data){
+          memrun.ifchangesave("echo '{\"aa\":\"bb\"}'",testdb,over).then(function(data){
             verb(JSON.stringify(data),"error","Memrun:change");
             process.exit(1);
           }).catch(function(err){

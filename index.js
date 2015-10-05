@@ -102,7 +102,7 @@ if(data._id){
 
 
 },
-ifchange:function(cmd,db,overrides,callback){
+ifchangesave:function(cmd,db,overrides,callback){
   var db=PouchDB(db);
   return new Promise(function (resolve, reject) {
 ex(cmd).then(function(data){
